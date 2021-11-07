@@ -9,9 +9,9 @@ export const LanguageContextProvider = ({ children }) => {
   const handleTranslate = (language, text) => {
     setValue(language);
     if (translations[language][text] === undefined) {
-      return "번역 불가";
+      return { text: "번역 불가", sound: "" };
     }
-    return translations[language][text];
+    return { text: translations[language][text], sound: translations["sound"][language][text] };
   };
 
   return <LanguageContext.Provider value={{ handleTranslate }}>{children}</LanguageContext.Provider>;
