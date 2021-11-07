@@ -1,11 +1,11 @@
-import { UserContextProvider } from "./context";
-import Screen from "./Screen";
+import { LanguageContextProvider } from "./context";
+import Home from "./Home";
 
 const App = () => {
   return (
-    <UserContextProvider>
-      <Screen />
-    </UserContextProvider>
+    <LanguageContextProvider>
+      <Home />
+    </LanguageContextProvider>
   );
 };
 
