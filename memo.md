@@ -1,5 +1,7 @@
 # React Hooks Demo
 
+## useContext
+
 - Redux나 useContext를 사용하는 이유는 State Management(상태 관리)를 하기 위해서이다.
 - useContext는 상태 관리를 위한 간단한 해결책을 제시하는데, 데이터를 사용자가 만든 Component나 State에 저장하고 보관한다.
 - 그래서 Props를 전달하기 위해서 Props를 사용하지 않는 컴포넌트를 굳이 이용하지 않고, 데이터가 필요할 때 언제든지 데이터가 저장된 객체에 들어가서 필요한 데이터만 가져와서 사용한다.
@@ -57,7 +59,7 @@ const Header = () => {
 export default Header;
 ```
 
-#### Context 사용 예시
+#### useContext 사용 예시
 
 - App.js에서 createContext()메서드를 이용해서 Context를 생성해줬다.
 - 생성해준 Context를 이용해서 Context.Provider컴포넌트를 만들고, Context.Provider컴포넌트의 value props에 전달하고자 하는 값을 할당한다.
@@ -135,4 +137,47 @@ const Child = () => {
 };
 
 export default Child;
+```
+
+## useReducer
+
+- useReducer는 주로 컴포넌트가 많은 수의 state값을 가지고 있을 때 쓰이거나, 컴포넌트의 state를 좀 더 최적화시킬 때 사용한다.
+- 즉, 컴포넌트의 state를 변경해야 하는데, 이 state가 굉장히 방대해서 파악하기 힘들 때, 좀 더 보기 쉽게 정리정돈해서 작업할 수 있다.
+
+#### useReducer 사용 예시
+
+```javascript
+import { useReducer } from "react";
+
+// reducer함수는 파라미터 state에 현재 state를 받아오게 되고, action에는 dispatch함수가 보낸 값을 전달받게 된다.
+// reducer함수가 리턴하는 값이 곧, 현재 state값으로 대체해서 들어가게 된다.
+// dispatch함수는 reducer함수를 재실행시키는 역할을 하는데, 재실행시킬 때 action을 같이 보내주게 된다.
+// 그렇게되면 reducer함수는 이 action을 받아서 action안에 있는 타입에 따라 if문이나 switch문을 실행하고 새로운 state값을 리턴하게 된다.
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "add":
+      return { count: state.count + 1 };
+    case "minus":
+      return { count: state.count - 1 };
+    default:
+      throw new Error();
+  }
+};
+
+const App = () => {
+  // useReducer훅은 첫 번째 인자로 reducer함수를 받고, 두 번째 인자로는 state의 초기값을 받는다.
+  // useReducer훅을 실행하게 되면 state와 dispatch를 받아올 수 있는데 state에는 현재 state값을 받아오고, dispatch에는 reducer함수를 재실행시킬 수 있는 dispatch함수를 받아온다.
+  // reducer함수가 처음으로 실행될 때, useReducer를 통해 전달한 값인 { count: 0 }을 state의 초기값으로 받아서 실행한다.
+  const [state, dispatch] = useReducer(reducer, { count: 0 });
+
+  return (
+    <div>
+      <h2>{state.count}</h2>
+      <button onClick={() => dispatch({ type: "add" })}>Add</button>
+      <button onClick={() => dispatch({ type: "minus" })}>Minus</button>
+    </div>
+  );
+};
+
+export default App;
 ```
